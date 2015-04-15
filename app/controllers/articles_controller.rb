@@ -6,11 +6,19 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
   def new
+    @article = Article.new
   end
 
   def create
-    @article = Article.new(params.require(:article).permit(:title, :text));
-    @article.save
-    redirect_to @article
+    @article = Article.new(article_param);
+    if @article.save
+      redirect_to @article
+    else
+      render 'new'
+    end
   end
+  private   
+    def article_param
+      params.require(:article).permit(:title, :text)
+    end
 end
